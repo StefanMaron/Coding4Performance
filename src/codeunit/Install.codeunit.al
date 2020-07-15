@@ -15,4 +15,12 @@ codeunit 50000 "Install"
                 LargeTable.Insert();
             end;
     end;
+
+    local procedure MyAwesomeFunction()
+    var
+        TempText: TextBuilder;
+    begin
+        TempText.Append('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt');
+        TempText.Replace('Lorem ipsum', '');
+    end;
 }
