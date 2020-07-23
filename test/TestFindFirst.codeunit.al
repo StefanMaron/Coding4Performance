@@ -1,9 +1,9 @@
-codeunit 50100 "Test FindSet"
+codeunit 50101 "Test FindFirst"
 {
     Subtype = Test;
 
     [Test]
-    procedure ReadAllRecords_FindSet()
+    procedure ReadAllRecords_FindFirst()
     var
         LargeTable: Record "Large Table";
         OffSetSqlRowsRead: BigInteger;
@@ -13,7 +13,8 @@ codeunit 50100 "Test FindSet"
         OffSetSqlStatementsExecuted := SessionInformation.SqlStatementsExecuted;
         OffSetSqlRowsRead := SessionInformation.SqlRowsRead;
 
-        LargeTable.FindSet();
+        LargeTable.SetCurrentKey("Text Field 1");
+        LargeTable.FindFirst();
 
         Error(
             'Statements executed: %1\Rows read: %2',
@@ -23,7 +24,7 @@ codeunit 50100 "Test FindSet"
     end;
 
     [Test]
-    procedure ReadAllRecords_IterateAll_FindSet()
+    procedure ReadAllRecords_IterateAll_FindFirst()
     var
         LargeTable: Record "Large Table";
         OffSetSqlRowsRead: BigInteger;
@@ -33,7 +34,7 @@ codeunit 50100 "Test FindSet"
         OffSetSqlStatementsExecuted := SessionInformation.SqlStatementsExecuted;
         OffSetSqlRowsRead := SessionInformation.SqlRowsRead;
 
-        if LargeTable.FindSet() then
+        if LargeTable.FindFirst() then
             repeat
             until LargeTable.Next() = 0;
 
@@ -44,9 +45,8 @@ codeunit 50100 "Test FindSet"
         );
     end;
 
-
     [Test]
-    procedure ReadAllRecords_Iterate10000_Break_FindSet()
+    procedure ReadAllRecords_Iterate10000_Break_FindFirst()
     var
         LargeTable: Record "Large Table";
         OffSetSqlRowsRead: BigInteger;
@@ -55,8 +55,7 @@ codeunit 50100 "Test FindSet"
         SelectLatestVersion();
         OffSetSqlStatementsExecuted := SessionInformation.SqlStatementsExecuted;
         OffSetSqlRowsRead := SessionInformation.SqlRowsRead;
-
-        if LargeTable.FindSet() then
+        if LargeTable.FindFirst() then
             repeat
                 if LargeTable."Entry No." = 10000 then
                     break;
@@ -70,7 +69,7 @@ codeunit 50100 "Test FindSet"
     end;
 
     [Test]
-    procedure ReadAllRecords_Iterate10000_Filter_FindSet()
+    procedure ReadAllRecords_Iterate10000_Filter_FindFirst()
     var
         LargeTable: Record "Large Table";
         OffSetSqlRowsRead: BigInteger;
@@ -81,7 +80,7 @@ codeunit 50100 "Test FindSet"
         OffSetSqlRowsRead := SessionInformation.SqlRowsRead;
 
         LargeTable.SetFilter("Entry No.", '<=%1', 10000);
-        if LargeTable.FindSet() then
+        if LargeTable.FindFirst() then
             repeat
             until LargeTable.Next() = 0;
 
